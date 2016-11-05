@@ -1,11 +1,9 @@
 package org.db0.targetcontroller.util;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,6 +29,7 @@ public class BluetoothManager {
     private Set<BluetoothDevice> bondedDevices;
     private BluetoothSocket btSocket;
     private OutputStream outStream;
+    private BluetoothDevice targetDevice;
 
     private BluetoothManager() {
 
@@ -65,7 +64,8 @@ public class BluetoothManager {
         for (BluetoothDevice device : bondedDevices) {
             if (device.getName().equals(DEFAULT_BT_DEVICE_NAME)) {
                 try {
-                    btSocket = device.createRfcommSocketToServiceRecord(BT_UUID);
+                    targetDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(device.getAddress());
+                    btSocket = targetDevice.createRfcommSocketToServiceRecord(BT_UUID);
                     btSocket.connect();
                     Toast.makeText(context, R.string.bluetooth_connected, Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
@@ -79,9 +79,13 @@ public class BluetoothManager {
                 }
             }
         }
+
+        if (targetDevice == null) {
+            Toast.makeText(context, R.string.bluetooth_no_device, Toast.LENGTH_LONG).show();
+        }
     }
 
-    public void setPosition(int number) {
+    public void sendPosition(int number) {
         if (number < 0 || number > 180) {
             throw new IllegalArgumentException("Number out of bounds");
         }

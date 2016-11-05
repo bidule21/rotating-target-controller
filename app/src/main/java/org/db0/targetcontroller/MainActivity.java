@@ -13,7 +13,7 @@ import org.db0.targetcontroller.util.BluetoothManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int BLUETOOTH_REQUIEST_CODE = 12345;
+    private static final int BLUETOOTH_REQUEST_CODE = 12345;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -21,14 +21,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BluetoothManager bluetoothManager = BluetoothManager.getInstance();
-
         if (!BluetoothManager.isBluetoothEnabled()) {
             Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(turnOn, BLUETOOTH_REQUIEST_CODE);
+            startActivityForResult(turnOn, BLUETOOTH_REQUEST_CODE);
+        } else {
+            BluetoothManager.getInstance().connect(getApplicationContext());
         }
-
-        bluetoothManager.connect(getApplicationContext());
     }
 
     public void settingsClick(View view) {
@@ -38,9 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == BLUETOOTH_REQUIEST_CODE) {
+        if (requestCode == BLUETOOTH_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.d(TAG, "bluetooth started");
+
+                BluetoothManager.getInstance().connect(getApplicationContext());
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(this, R.string.open_bluetooth_error, Toast.LENGTH_LONG).show();
