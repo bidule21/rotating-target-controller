@@ -5,6 +5,8 @@
     <string name="target_invisible">Piilossa</string>
     <string name="button_test">Kokeile</string>
     <string name="button_save">Tallenna</string>
+    <string name="button_connect">Yhdistä tauluun</string>
+    <string name="button_disconnect">Katkaise yhteys</string>
     <string name="tick">&gt;</string>
     <string name="open_bluetooth_error">Bluetooth pitää olla päällä. Käynnistä sovellus uudelleen.</string>
     <string name="bluetooth_connected">Yhdistetty tauluun</string>

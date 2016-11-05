@@ -28,7 +28,6 @@ public class BluetoothManager {
     private static BluetoothManager instance;
     private Set<BluetoothDevice> bondedDevices;
     private BluetoothSocket btSocket;
-    private OutputStream outStream;
     private BluetoothDevice targetDevice;
 
     private BluetoothManager() {
@@ -58,7 +57,7 @@ public class BluetoothManager {
         return bluetoothAdapter != null && bluetoothAdapter.isEnabled();
     }
 
-    public void connect(Context context) {
+    public boolean connect(Context context) {
         bondedDevices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
 
         for (BluetoothDevice device : bondedDevices) {
@@ -68,21 +67,44 @@ public class BluetoothManager {
                     btSocket = targetDevice.createRfcommSocketToServiceRecord(BT_UUID);
                     btSocket.connect();
                     Toast.makeText(context, R.string.bluetooth_connected, Toast.LENGTH_SHORT).show();
+
+                    return true;
                 } catch (IOException e) {
                     try {
                         btSocket.close();
                     } catch (IOException e1) {
                         Log.e(TAG, "error closing socket", e1);
+
+                        return false;
                     }
                     Log.e(TAG, "error opening socket", e);
                     Toast.makeText(context, R.string.bluetooth_connection_failed, Toast.LENGTH_LONG).show();
+
+                    return false;
                 }
             }
         }
 
         if (targetDevice == null) {
             Toast.makeText(context, R.string.bluetooth_no_device, Toast.LENGTH_LONG).show();
+
+            return false;
         }
+
+        return true;
+    }
+
+    public void disconnect() {
+        if (btSocket != null && btSocket.isConnected()) {
+            try {
+                btSocket.close();
+            } catch (IOException e) {
+                Log.e(TAG, "error closing socket", e);
+            }
+        }
+
+        targetDevice = null;
+        bondedDevices = null;
     }
 
     public void sendPosition(int number) {
@@ -90,7 +112,7 @@ public class BluetoothManager {
             throw new IllegalArgumentException("Number out of bounds");
         }
         try {
-            btSocket.getOutputStream().write((byte)(number & 0xFF));
+            btSocket.getOutputStream().write((byte) (number & 0xFF));
         } catch (IOException e) {
             Log.e(TAG, "error sending position", e);
         } catch (NullPointerException e) {

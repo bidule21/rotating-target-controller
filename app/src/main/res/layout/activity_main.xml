@@ -6,13 +6,20 @@
     android:layout_height="match_parent"
     tools:context="org.db0.targetcontroller.MainActivity">
 
+    <Button
+        android:id="@+id/button_connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="connectClick"
+        android:text="@string/button_connect" />
+
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/activity_vertical_margin"
+        android:onClick="settingsClick"
         android:src="@drawable/ic_cog"
-        android:tint="@color/white"
-        android:onClick="settingsClick"/>
+        android:tint="@color/white" />
 </RelativeLayout>
