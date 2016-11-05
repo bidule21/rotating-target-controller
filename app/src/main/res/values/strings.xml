@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Taulukontrolleri</string>
-    <string name="target_settings">Taulun asetukset</string>
+    <string name="settings_screen">Taulun asetukset</string>
+
     <string name="target_visible">Näkyvissä</string>
     <string name="target_invisible">Piilossa</string>
     <string name="button_test">Kokeile</string>

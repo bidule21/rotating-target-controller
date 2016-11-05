@@ -20,6 +20,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        setTitle(R.string.settings_screen);
+
         tickHidden = (TextView) findViewById(R.id.seekbar_tick_hidden);
         tickHidden.setVisibility(View.VISIBLE);
         tickVisible = (TextView) findViewById(R.id.seekbar_tick_visible);

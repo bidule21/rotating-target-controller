@@ -12,12 +12,6 @@
     tools:context="org.db0.targetcontroller.SettingsActivity">
 
     <TextView
-        style="@style/SettingsHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/target_settings" />
-
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/target_visible" />
