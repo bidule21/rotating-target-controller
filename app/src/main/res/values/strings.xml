@@ -6,4 +6,7 @@
     <string name="button_test">Kokeile</string>
     <string name="button_save">Tallenna</string>
     <string name="tick">&gt;</string>
+    <string name="open_bluetooth_error">Bluetooth pitää olla päällä. Käynnistä sovellus uudelleen.</string>
+    <string name="bluetooth_connected">Yhdistetty tauluun.</string>
+    <string name="bluetooth_connection_failed">Yhdistäminen tauluun epäonnistui. Tarkista, että taulu on päällä ja käynnistä uudelleen.</string>
 </resources>
