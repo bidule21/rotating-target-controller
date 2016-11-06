@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#ff5a595b</color>
     <color name="colorPrimaryDark">#ff4a494b</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="accent_material_dark">#ff5a595b</color>
+    <color name="accent_material_dark" tools:override="true">#ff5a595b</color>
     <color name="white">#fff</color>
+
+    <color name="progress_wait_start">#0080FF</color>
+    <color name="progress_wait_end">#0040FF</color>
+    <color name="progress_shoot_start">#FF4000</color>
+    <color name="progress_shoot_end">#FF8000</color>
+    <color name="progress_back">#404040</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

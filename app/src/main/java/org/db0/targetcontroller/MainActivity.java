@@ -3,11 +3,12 @@ package org.db0.targetcontroller;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.db0.targetcontroller.util.BluetoothManager;
@@ -65,5 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
             btConnected = false;
         }
+    }
+
+    public void startClick(View view) {
     }
 }

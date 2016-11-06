@@ -5,4 +5,5 @@
     <dimen name="seekbar_value_width">30dp</dimen>
     <dimen name="seekbar_tick_width">10dp</dimen>
     <dimen name="slider_height">32dp</dimen>
+    <dimen name="shooting_timer_width">18dp</dimen>
 </resources>

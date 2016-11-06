@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:CircleProgressView="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -12,6 +13,13 @@
         android:layout_height="wrap_content"
         android:onClick="connectClick"
         android:text="@string/button_connect" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:onClick="startClick"
+        android:text="@string/button_start_shooting" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
