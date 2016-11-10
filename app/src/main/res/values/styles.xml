@@ -12,7 +12,7 @@
 
     </style>
 
-    <style name="FullscreenTheme" parent="AppTheme">
+    <style name="AppTheme.Fullscreen" parent="AppTheme">
         <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>

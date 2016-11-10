@@ -2,16 +2,28 @@ package org.db0.targetcontroller;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.db0.targetcontroller.model.FiringSequence;
 import org.db0.targetcontroller.util.BluetoothManager;
+
+import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
+import io.realm.RealmBaseAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         connectButton = (Button) findViewById(R.id.button_connect);
+
+        Realm realm = Realm.getDefaultInstance();
+
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_shooting_selector);
+        SequenceSpinnerAdapter spinnerAdapter = new SequenceSpinnerAdapter(this, realm.where(FiringSequence.class).findAll());
+        spinner.setAdapter(spinnerAdapter);
     }
 
     public void settingsClick(View view) {
@@ -69,5 +87,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startClick(View view) {
+    }
+
+    private class SequenceSpinnerAdapter extends RealmBaseAdapter<FiringSequence> implements SpinnerAdapter {
+
+        private final OrderedRealmCollection<FiringSequence> data;
+
+        public SequenceSpinnerAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<FiringSequence> data) {
+            super(context, data);
+
+            this.data = data;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            TextView textView = new TextView(view.getContext());
+            textView.setText(data.get(i).getName());
+            return textView;
+        }
     }
 }

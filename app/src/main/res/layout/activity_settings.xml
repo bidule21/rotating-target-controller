@@ -9,7 +9,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.db0.targetcontroller.SettingsActivity">
+    tools:context=".SettingsActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:text="@string/header_target_position"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -101,4 +108,18 @@
             android:onClick="saveClick"
             android:text="@string/button_save" />
     </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="Ampumaohjelmat"
+        android:textSize="18sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/firing_sequences"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

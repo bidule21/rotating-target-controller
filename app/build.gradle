@@ -1,8 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "org.db0.targetcontroller"
         minSdkVersion 15
@@ -26,5 +30,10 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
+
+    compile 'io.realm:android-adapters:1.4.0'
+
+    compile 'fi.qvik.lib:realm-adapters-android:0.1.4'
+
     testCompile 'junit:junit:4.12'
 }
