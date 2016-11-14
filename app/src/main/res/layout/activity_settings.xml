@@ -108,18 +108,4 @@
             android:onClick="saveClick"
             android:text="@string/button_save" />
     </LinearLayout>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:text="Ampumaohjelmat"
-        android:textSize="18sp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/firing_sequences"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </LinearLayout>

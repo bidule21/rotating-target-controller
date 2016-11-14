@@ -12,6 +12,15 @@ public class FiringSequenceItem extends RealmObject {
     private int fire;
     private boolean pauseAfter;
 
+    public FiringSequenceItem() {
+    }
+
+    public FiringSequenceItem(int prepare, int fire, boolean pauseAfter) {
+        this.prepare = prepare;
+        this.fire = fire;
+        this.pauseAfter = pauseAfter;
+    }
+
     public int getPrepare() {
         return prepare;
     }

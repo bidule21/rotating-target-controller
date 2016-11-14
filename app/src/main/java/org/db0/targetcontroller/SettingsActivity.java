@@ -1,19 +1,15 @@
 package org.db0.targetcontroller;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import org.db0.targetcontroller.model.FiringSequence;
 import org.db0.targetcontroller.model.Servo;
 import org.db0.targetcontroller.util.BluetoothManager;
 
 import io.realm.Realm;
-import io.realm.RealmRecyclerViewAdapter;
 
 public class SettingsActivity extends AppCompatActivity {
     private boolean targetVisible = true;
@@ -96,19 +92,6 @@ public class SettingsActivity extends AppCompatActivity {
             seekBarVisible.setProgress(servo.getVisible());
             seekBarVisibleValue.setText(String.format(getResources().getConfiguration().locale, "%d", servo.getVisible()));
         }
-
-        RecyclerView firingSequences = (RecyclerView) findViewById(R.id.firing_sequences);
-        firingSequences.setAdapter(new RealmRecyclerViewAdapter<FiringSequence, RecyclerView.ViewHolder>(this, Realm.getDefaultInstance().where(FiringSequence.class).findAll(), true) {
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                return null;
-            }
-
-            @Override
-            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-            }
-        });
 
         realm.close();
     }

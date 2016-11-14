@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            TextView textView = new TextView(view.getContext());
+            TextView textView = new TextView(getApplicationContext());
             textView.setText(data.get(i).getName());
             return textView;
         }

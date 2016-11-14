@@ -33,7 +33,5 @@ dependencies {
 
     compile 'io.realm:android-adapters:1.4.0'
 
-    compile 'fi.qvik.lib:realm-adapters-android:0.1.4'
-
     testCompile 'junit:junit:4.12'
 }
