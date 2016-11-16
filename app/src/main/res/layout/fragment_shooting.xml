@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        tools:text="@string/shooting_prepare" />
+                        android:text="@string/shooting_prepare" />
 
                 </LinearLayout>
             </RelativeLayout>
@@ -86,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        tools:text="@string/shooting_firing" />
+                        android:text="@string/shooting_firing" />
 
                 </LinearLayout>
             </RelativeLayout>

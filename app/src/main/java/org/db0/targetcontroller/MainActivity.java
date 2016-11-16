@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startClick(View view) {
+        Intent intent = new Intent(this, ShootingActivity.class);
+        startActivity(intent);
     }
 
     private class SequenceSpinnerAdapter extends RealmBaseAdapter<FiringSequence> implements SpinnerAdapter {

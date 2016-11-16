@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="org.db0.targetcontroller.ShootingActivity">
 
-    <android.support.v4.view.ViewPager
+    <org.db0.targetcontroller.util.NonSwipeableViewPager
         android:id="@+id/shooting_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
