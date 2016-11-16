@@ -30,6 +30,14 @@ public abstract class SecondCountDownTimer {
         return this;
     }
 
+    public void cancel() {
+        if (timer != null) {
+            if (timer.getState() != Thread.State.NEW) {
+                timer.interrupt();
+            }
+        }
+    }
+
     private Runnable getOnTickRunnable(final int second) {
         return new Runnable() {
             @Override

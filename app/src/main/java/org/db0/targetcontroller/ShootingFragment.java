@@ -131,4 +131,15 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        try {
+            ServoManager.getInstance().getBus().unregister(this);
+        } catch (IllegalArgumentException e) {
+            // ignored
+        }
+    }
 }

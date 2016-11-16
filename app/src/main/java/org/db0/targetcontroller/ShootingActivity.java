@@ -93,4 +93,11 @@ public class ShootingActivity extends AppCompatActivity {
             viewPager.setCurrentItem(Math.min(next, max));
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
+        ServoManager.getPrepareTimer().cancel();
+        ServoManager.getFiringTimer().cancel();
+    }
 }
