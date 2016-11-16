@@ -18,16 +18,12 @@
     <string name="tick">&gt;</string>
     <string name="open_bluetooth_error">Bluetooth pitää olla päällä. Käynnistä sovellus uudelleen.</string>
     <string name="bluetooth_connected">Yhdistetty tauluun</string>
-    <string name="bluetooth_connection_failed">Yhdistäminen tauluun epäonnistui. Käynnistä taulu ja sovellus uudelleen.</string>
+    <string name="bluetooth_connection_failed">Yhdistäminen tauluun epäonnistui. Käynnistä taulu ja sovellus uudelleen ja parita taulu uudelleen tarvittaessa.</string>
     <string name="bluetooth_no_device">Taulua ei löytynyt. Parita laite taulun HC-06 kanssa uudelleen.</string>
 
     <string name="title_activity_shooting">ShootingActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-
     <string name="shooting_prepare">Valmistautuminen</string>
     <string name="shooting_firing">Ammunta</string>
+    <string name="message_doubleclick_to_exit">Paina takaisin-nappia uudelleen poistuaksesi ammunnasta</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

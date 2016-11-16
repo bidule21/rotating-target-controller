@@ -1,11 +1,14 @@
 package org.db0.targetcontroller;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import org.db0.targetcontroller.model.FiringSequence;
 import org.db0.targetcontroller.model.FiringSequenceItem;
@@ -20,6 +23,12 @@ public class ShootingActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private ShootingSequenceAdapter adapter;
 
+    private boolean doubleBackToExitPressedOnce = false;
+    private Handler quitHandler = new Handler();
+    private static final int BACKPRESS_DELAY = 2000;
+    private Toast quitToast;
+
+    @SuppressLint("ShowToast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +69,8 @@ public class ShootingActivity extends AppCompatActivity {
 
         ShootingFragment fragment = (ShootingFragment) adapter.instantiateItem(viewPager, viewPager.getCurrentItem());
         ServoManager.getInstance().getBus().register(fragment);
+
+        quitToast = Toast.makeText(this, R.string.message_doubleclick_to_exit, Toast.LENGTH_SHORT);
     }
 
     private class ShootingSequenceAdapter extends FragmentStatePagerAdapter {
@@ -96,8 +107,23 @@ public class ShootingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        this.finish();
-        ServoManager.getPrepareTimer().cancel();
-        ServoManager.getFiringTimer().cancel();
+        if (doubleBackToExitPressedOnce) {
+            finish();
+            ServoManager.getPrepareTimer().cancel();
+            ServoManager.getFiringTimer().cancel();
+
+            quitToast.cancel();
+        } else {
+            this.doubleBackToExitPressedOnce = true;
+
+            quitToast.show();
+
+            quitHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, BACKPRESS_DELAY);
+        }
     }
 }
