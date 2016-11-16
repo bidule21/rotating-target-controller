@@ -15,11 +15,14 @@ import org.db0.targetcontroller.model.FiringTimerAdvancedMessage;
 import org.db0.targetcontroller.model.FiringTimerFinishedMessage;
 import org.db0.targetcontroller.model.PrepareTimerAdvancedMessage;
 import org.db0.targetcontroller.model.PrepareTimerFinishedMessage;
+import org.db0.targetcontroller.model.Servo;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+
+import io.realm.Realm;
 
 /**
  * @author Timo/QVIK
@@ -36,6 +39,9 @@ public class ServoManager {
 
     private static SecondCountDownTimer prepareTimer;
     private static SecondCountDownTimer firingTimer;
+
+    private static int hidden = 0;
+    private static int visible = 90;
 
     private Set<BluetoothDevice> bondedDevices;
     private BluetoothSocket btSocket;
@@ -81,6 +87,14 @@ public class ServoManager {
                 bus.post(new FiringTimerFinishedMessage());
             }
         };
+
+        Realm realm = Realm.getDefaultInstance();
+        Servo servo = realm.where(Servo.class).findFirst();
+        if (servo != null) {
+            hidden = servo.getHidden();
+            visible = servo.getVisible();
+        }
+        realm.close();
     }
 
     /**
@@ -155,6 +169,24 @@ public class ServoManager {
         } catch (NullPointerException e) {
             Log.e(TAG, "error sending position, socket not ready", e);
         }
+    }
+
+    public void updateServoPosisions() {
+        Realm realm = Realm.getDefaultInstance();
+        Servo servo = realm.where(Servo.class).findFirst();
+        if (servo != null) {
+            hidden = servo.getHidden();
+            visible = servo.getVisible();
+        }
+        realm.close();
+    }
+
+    public void showTarget() {
+        sendPosition(visible);
+    }
+
+    public void hideTarget() {
+        sendPosition(hidden);
     }
 
     public Bus getBus() {

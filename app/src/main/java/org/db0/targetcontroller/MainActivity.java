@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startClick(View view) {
+        ServoManager.getInstance().updateServoPosisions();
+
         Intent intent = new Intent(this, ShootingActivity.class);
         startActivity(intent);
     }

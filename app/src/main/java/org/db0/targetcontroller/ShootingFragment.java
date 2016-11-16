@@ -84,6 +84,8 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_start_sequence) {
+            ServoManager.getInstance().hideTarget();
+
             ServoManager.getPrepareTimer().start(prepare);
             view.setVisibility(View.GONE);
         }
@@ -103,6 +105,8 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
             prepareProgress.setProgress(0);
             prepareTime.setText("0");
             ServoManager.getFiringTimer().start(fire);
+
+            ServoManager.getInstance().showTarget();
         }
     }
 
@@ -117,6 +121,8 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
     @Subscribe
     public void firingTimeFinished(FiringTimerFinishedMessage message) {
         if (getUserVisibleHint()) {
+            ServoManager.getInstance().hideTarget();
+
             firingProgress.setProgress(0);
             firingTime.setText("0");
 
