@@ -7,7 +7,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.db0.targetcontroller.model.Servo;
-import org.db0.targetcontroller.util.BluetoothManager;
+import org.db0.targetcontroller.util.ServoManager;
 
 import io.realm.Realm;
 
@@ -36,7 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
                 seekBarVisibleValue.setText(String.format(getResources().getConfiguration().locale, "%d", value));
 
                 if (userChanged) {
-                    BluetoothManager.getInstance().sendPosition(value);
+                    ServoManager.getInstance().sendPosition(value);
                 }
 
                 tickVisible.setVisibility(View.VISIBLE);
@@ -63,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
                 seekBarHiddenValue.setText(String.format(getResources().getConfiguration().locale, "%d", value));
 
                 if (userChanged) {
-                    BluetoothManager.getInstance().sendPosition(value);
+                    ServoManager.getInstance().sendPosition(value);
                 }
 
                 tickVisible.setVisibility(View.INVISIBLE);
@@ -98,13 +98,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void testClick(View view) {
         if (targetVisible) {
-            BluetoothManager.getInstance().sendPosition(seekBarHidden.getProgress());
+            ServoManager.getInstance().sendPosition(seekBarHidden.getProgress());
 
             tickVisible.setVisibility(View.INVISIBLE);
             tickHidden.setVisibility(View.VISIBLE);
             targetVisible = false;
         } else {
-            BluetoothManager.getInstance().sendPosition(seekBarVisible.getProgress());
+            ServoManager.getInstance().sendPosition(seekBarVisible.getProgress());
 
             targetVisible = true;
             tickVisible.setVisibility(View.VISIBLE);

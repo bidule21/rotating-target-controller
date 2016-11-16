@@ -7,10 +7,17 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.squareup.otto.Bus;
+
 import org.db0.targetcontroller.R;
+import org.db0.targetcontroller.ShootingActivity;
+import org.db0.targetcontroller.model.FiringTimerAdvancedMessage;
+import org.db0.targetcontroller.model.FiringTimerFinishedMessage;
+import org.db0.targetcontroller.model.PrepareTimerAdvancedMessage;
+import org.db0.targetcontroller.model.PrepareTimerFinishedMessage;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,31 +26,61 @@ import java.util.UUID;
  * @since 05.11.2016
  */
 
-public class BluetoothManager {
-    private static final String TAG = BluetoothManager.class.getSimpleName();
+public class ServoManager {
+    private static final String TAG = ServoManager.class.getSimpleName();
 
     private static final String DEFAULT_BT_DEVICE_NAME = "HC-06";
     private static final UUID BT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    private static BluetoothManager instance;
+    private static ServoManager instance;
+
+    private static SecondCountDownTimer prepareTimer;
+    private static SecondCountDownTimer firingTimer;
+
     private Set<BluetoothDevice> bondedDevices;
     private BluetoothSocket btSocket;
     private BluetoothDevice targetDevice;
 
-    private BluetoothManager() {
+    private static Bus bus = new Bus();
+
+    private ServoManager() {
 
     }
 
-    public static BluetoothManager getInstance() {
+    public static ServoManager getInstance() {
         if (instance == null) {
-            synchronized (BluetoothManager.class) {
-                if (instance == null) {
-                    instance = new BluetoothManager();
-                }
-            }
+            throw new IllegalStateException("ServoManager not init()ed");
         }
 
         return instance;
+    }
+
+    public static void init() {
+        instance = new ServoManager();
+
+        prepareTimer = new SecondCountDownTimer() {
+            @Override
+            public void onTick(int progress) {
+                bus.post(new PrepareTimerAdvancedMessage(progress));
+            }
+
+            @Override
+            public void onFinish() {
+                bus.post(new PrepareTimerFinishedMessage());
+            }
+        };
+
+        firingTimer = new SecondCountDownTimer() {
+            @Override
+            public void onTick(int progress) {
+                bus.post(new FiringTimerAdvancedMessage(progress));
+            }
+
+            @Override
+            public void onFinish() {
+                bus.post(new FiringTimerFinishedMessage());
+            }
+        };
     }
 
     /**
@@ -118,5 +155,17 @@ public class BluetoothManager {
         } catch (NullPointerException e) {
             Log.e(TAG, "error sending position, socket not ready", e);
         }
+    }
+
+    public Bus getBus() {
+        return bus;
+    }
+
+    public static SecondCountDownTimer getPrepareTimer() {
+        return prepareTimer;
+    }
+
+    public static SecondCountDownTimer getFiringTimer() {
+        return firingTimer;
     }
 }

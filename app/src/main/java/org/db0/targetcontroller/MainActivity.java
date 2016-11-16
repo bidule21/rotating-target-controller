@@ -12,14 +12,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.db0.targetcontroller.model.FiringSequence;
-import org.db0.targetcontroller.util.BluetoothManager;
+import org.db0.targetcontroller.util.ServoManager;
 
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (!BluetoothManager.isBluetoothEnabled()) {
+        if (!ServoManager.isBluetoothEnabled()) {
             Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(turnOn, BLUETOOTH_REQUEST_CODE);
         }
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void connectClick(View view) {
         if (!btConnected) {
-            if (BluetoothManager.getInstance().connect(getApplicationContext())) {
+            if (ServoManager.getInstance().connect(getApplicationContext())) {
                 btConnected = true;
 
                 connectButton.setText(R.string.button_disconnect);
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 btConnected = false;
             }
         } else {
-            BluetoothManager.getInstance().disconnect();
+            ServoManager.getInstance().disconnect();
 
             connectButton.setText(R.string.button_connect);
 

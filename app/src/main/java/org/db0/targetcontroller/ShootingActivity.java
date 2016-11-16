@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import org.db0.targetcontroller.model.FiringSequence;
 import org.db0.targetcontroller.model.FiringSequenceItem;
-import org.db0.targetcontroller.util.SecondCountDownTimer;
+import org.db0.targetcontroller.util.ServoManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +18,7 @@ import io.realm.Realm;
 
 public class ShootingActivity extends AppCompatActivity {
     private ViewPager viewPager;
-
-    private SecondCountDownTimer prepareTimer;
-    private SecondCountDownTimer firingTimer;
+    private ShootingSequenceAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +30,36 @@ public class ShootingActivity extends AppCompatActivity {
 
         Realm realm = Realm.getDefaultInstance();
         FiringSequence firingSequence = realm.where(FiringSequence.class).findFirst();
-        ShootingSequenceAdapter adapter = new ShootingSequenceAdapter(getSupportFragmentManager(), firingSequence.getSequence());
+        adapter = new ShootingSequenceAdapter(getSupportFragmentManager(), firingSequence.getSequence());
 
         viewPager.setAdapter(adapter);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            int lastPosition = 0;
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ShootingFragment fragment = (ShootingFragment) adapter.instantiateItem(viewPager, lastPosition);
+                ServoManager.getInstance().getBus().unregister(fragment);
+
+                fragment = (ShootingFragment) adapter.instantiateItem(viewPager, position);
+                ServoManager.getInstance().getBus().register(fragment);
+
+                lastPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        ShootingFragment fragment = (ShootingFragment) adapter.instantiateItem(viewPager, viewPager.getCurrentItem());
+        ServoManager.getInstance().getBus().register(fragment);
     }
 
     private class ShootingSequenceAdapter extends FragmentStatePagerAdapter {

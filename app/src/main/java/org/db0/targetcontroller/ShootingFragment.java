@@ -1,6 +1,5 @@
 package org.db0.targetcontroller;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,12 +9,18 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.db0.targetcontroller.util.SecondCountDownTimer;
+import com.squareup.otto.Subscribe;
+
+import org.db0.targetcontroller.model.FiringTimerAdvancedMessage;
+import org.db0.targetcontroller.model.FiringTimerFinishedMessage;
+import org.db0.targetcontroller.model.PrepareTimerAdvancedMessage;
+import org.db0.targetcontroller.model.PrepareTimerFinishedMessage;
+import org.db0.targetcontroller.util.ServoManager;
 
 import java.util.Locale;
 
 
-public class ShootingFragment extends Fragment implements View.OnClickListener{
+public class ShootingFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PREPARE = "prepare";
     private static final String ARG_FIRE = "fire";
     private static final String ARG_PAUSEAFTER = "pauseafter";
@@ -24,8 +29,10 @@ public class ShootingFragment extends Fragment implements View.OnClickListener{
     private int fire;
     private boolean pauseAfter;
 
-    private SecondCountDownTimer prepareTimer;
-    private SecondCountDownTimer firingTimer;
+    private ProgressBar prepareProgress;
+    private TextView prepareTime;
+    private ProgressBar firingProgress;
+    private TextView firingTime;
 
     public ShootingFragment() {
     }
@@ -55,54 +62,21 @@ public class ShootingFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shooting, container, false);
 
-        final TextView prepareTime = (TextView) view.findViewById(R.id.prepare_time);
+        prepareTime = (TextView) view.findViewById(R.id.prepare_time);
         prepareTime.setText(String.format(Locale.getDefault(), "%d", prepare));
-        final ProgressBar prepareProgress = (ProgressBar) view.findViewById(R.id.progress_wait);
+        prepareProgress = (ProgressBar) view.findViewById(R.id.progress_wait);
         prepareProgress.setMax(prepare);
         prepareProgress.setProgress(prepare);
 
 
-        final TextView firingTime = (TextView) view.findViewById(R.id.firing_time);
+        firingTime = (TextView) view.findViewById(R.id.firing_time);
         firingTime.setText(String.format(Locale.getDefault(), "%d", fire));
-        final ProgressBar firingProgress = (ProgressBar) view.findViewById(R.id.progress_shoot);
+        firingProgress = (ProgressBar) view.findViewById(R.id.progress_shoot);
         firingProgress.setMax(prepare);
         firingProgress.setProgress(prepare);
 
         Button startButton = (Button) view.findViewById(R.id.button_start_sequence);
         startButton.setOnClickListener(this);
-
-
-        prepareTimer = new SecondCountDownTimer(prepare) {
-            @Override
-            public void onTick(int progress) {
-                prepareProgress.setProgress(progress);
-                prepareTime.setText(String.format(Locale.getDefault(), "%d", progress));
-            }
-
-            @Override
-            public void onFinish() {
-                prepareProgress.setProgress(0);
-                prepareTime.setText("0");
-                firingTimer.start();
-            }
-        };
-
-        firingTimer = new SecondCountDownTimer(fire) {
-            @Override
-            public void onTick(int progress) {
-                firingProgress.setProgress(progress);
-                firingTime.setText(String.format(Locale.getDefault(), "%d", progress));
-            }
-
-            @Override
-            public void onFinish() {
-                firingProgress.setProgress(0);
-                firingTime.setText("0");
-                if (getActivity() != null) {
-                    ((ShootingActivity) getActivity()).next();
-                }
-            }
-        };
 
         return view;
     }
@@ -110,24 +84,45 @@ public class ShootingFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_start_sequence) {
-            prepareTimer.start();
+            ServoManager.getPrepareTimer().start(prepare);
             view.setVisibility(View.GONE);
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        prepareTimer.cancel();
-        firingTimer.cancel();
+    @Subscribe
+    public void prepareTimeAdvanced(PrepareTimerAdvancedMessage message) {
+        if (getUserVisibleHint()) {
+            prepareProgress.setProgress(message.getProgress());
+            prepareTime.setText(String.format(Locale.getDefault(), "%d", message.getProgress()));
+        }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
+    @Subscribe
+    public void prepareTimeFinished(PrepareTimerFinishedMessage message) {
+        if (getUserVisibleHint()) {
+            prepareProgress.setProgress(0);
+            prepareTime.setText("0");
+            ServoManager.getFiringTimer().start(fire);
+        }
+    }
 
-        prepareTimer.cancel();
-        firingTimer.cancel();
+    @Subscribe
+    public void firingTimeAdvanced(FiringTimerAdvancedMessage message) {
+        if (getUserVisibleHint()) {
+            firingProgress.setProgress(message.getProgress());
+            firingTime.setText(String.format(Locale.getDefault(), "%d", message.getProgress()));
+        }
+    }
+
+    @Subscribe
+    public void firingTimeFinished(FiringTimerFinishedMessage message) {
+        if (getUserVisibleHint()) {
+            firingProgress.setProgress(0);
+            firingTime.setText("0");
+
+            if (getActivity() != null) {
+                ((ShootingActivity) getActivity()).next();
+            }
+        }
     }
 }

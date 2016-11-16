@@ -4,6 +4,7 @@ import android.app.Application;
 
 import org.db0.targetcontroller.model.FiringSequence;
 import org.db0.targetcontroller.model.FiringSequenceItem;
+import org.db0.targetcontroller.util.ServoManager;
 
 import io.realm.Realm;
 
@@ -20,6 +21,8 @@ public class TargetControllerApplication extends Application {
         Realm.init(getApplicationContext());
 
         initrealm();
+
+        ServoManager.init();
     }
 
     private void initrealm() {

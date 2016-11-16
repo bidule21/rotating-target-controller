@@ -8,17 +8,11 @@ import android.os.Handler;
  */
 
 public abstract class SecondCountDownTimer {
-    private final int seconds;
     private TimerThread timer;
     private final Handler handler;
 
-    /**
-     * @param secondsToCountDown Total time in seconds you wish this timer to count down.
-     */
-    public SecondCountDownTimer(int secondsToCountDown) {
-        seconds = secondsToCountDown;
+    public SecondCountDownTimer() {
         handler = new Handler();
-        timer = new TimerThread(secondsToCountDown);
     }
 
     /**
@@ -26,24 +20,14 @@ public abstract class SecondCountDownTimer {
      * This call will override your timer duration only one time.
      **/
     public SecondCountDownTimer start(int secondsToCountDown) {
-        if (timer.getState() != Thread.State.NEW) {
-            timer.interrupt();
-            timer = new TimerThread(secondsToCountDown);
+        if (timer != null) {
+            if (timer.getState() != Thread.State.NEW) {
+                timer.interrupt();
+            }
         }
+        timer = new TimerThread(secondsToCountDown);
         timer.start();
         return this;
-    }
-
-    /**
-     * This will cancel your current timer and start a new one.
-     **/
-    public SecondCountDownTimer start() {
-        return start(seconds);
-    }
-
-    public void cancel() {
-        if (timer.isAlive()) timer.interrupt();
-        timer = new TimerThread(seconds);
     }
 
     private Runnable getOnTickRunnable(final int second) {
