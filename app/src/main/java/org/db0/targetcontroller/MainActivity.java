@@ -5,6 +5,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -69,13 +72,36 @@ public class MainActivity extends AppCompatActivity {
 
     public void connectClick(View view) {
         if (!btConnected) {
-            if (ServoManager.getInstance().connect(getApplicationContext())) {
-                btConnected = true;
+            final ProgressBar progress = (ProgressBar) findViewById(R.id.connect_progress);
+            progress.setVisibility(View.VISIBLE);
+            HandlerThread btconnect_thread = new HandlerThread("btconnect");
+            btconnect_thread.start();
+            new Handler(btconnect_thread.getLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    if (ServoManager.getInstance().connect(getApplicationContext())) {
+                        btConnected = true;
+                        
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                connectButton.setText(R.string.button_disconnect);
 
-                connectButton.setText(R.string.button_disconnect);
-            } else {
-                btConnected = false;
-            }
+                                progress.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    } else {
+                        btConnected = false;
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                progress.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }
+                }
+            });
         } else {
             ServoManager.getInstance().disconnect();
 

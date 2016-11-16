@@ -13,6 +13,15 @@
         android:onClick="connectClick"
         android:text="@string/button_connect" />
 
+    <ProgressBar
+        android:id="@+id/connect_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/button_connect"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,9 +31,9 @@
         <Spinner
             android:id="@+id/spinner_shooting_selector"
             android:layout_width="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/activity_horizontal_margin" />
 
         <Button
             android:layout_width="wrap_content"
