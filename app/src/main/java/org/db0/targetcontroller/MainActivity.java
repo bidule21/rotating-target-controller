@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     if (ServoManager.getInstance().connect(getApplicationContext())) {
                         btConnected = true;
-                        
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
