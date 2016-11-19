@@ -98,7 +98,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/button_start_sequence"
-            android:onClick="startSequenceClick"/>
+            android:text="@string/button_start_sequence" />
+
+        <Button
+            android:id="@+id/button_show_target"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/button_show_target" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

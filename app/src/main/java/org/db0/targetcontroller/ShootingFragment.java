@@ -29,10 +29,12 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
     private int fire;
     private boolean pauseAfter;
 
+    private View rootView;
     private ProgressBar prepareProgress;
     private TextView prepareTime;
     private ProgressBar firingProgress;
     private TextView firingTime;
+    private boolean sequenceStarted = false;
 
     public ShootingFragment() {
     }
@@ -60,34 +62,45 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shooting, container, false);
+        rootView = inflater.inflate(R.layout.fragment_shooting, container, false);
 
-        prepareTime = (TextView) view.findViewById(R.id.prepare_time);
+        prepareTime = (TextView) rootView.findViewById(R.id.prepare_time);
         prepareTime.setText(String.format(Locale.getDefault(), "%d", prepare));
-        prepareProgress = (ProgressBar) view.findViewById(R.id.progress_wait);
+        prepareProgress = (ProgressBar) rootView.findViewById(R.id.progress_wait);
         prepareProgress.setMax(prepare);
         prepareProgress.setProgress(prepare);
 
 
-        firingTime = (TextView) view.findViewById(R.id.firing_time);
+        firingTime = (TextView) rootView.findViewById(R.id.firing_time);
         firingTime.setText(String.format(Locale.getDefault(), "%d", fire));
-        firingProgress = (ProgressBar) view.findViewById(R.id.progress_shoot);
+        firingProgress = (ProgressBar) rootView.findViewById(R.id.progress_shoot);
         firingProgress.setMax(prepare);
         firingProgress.setProgress(prepare);
 
-        Button startButton = (Button) view.findViewById(R.id.button_start_sequence);
+        Button startButton = (Button) rootView.findViewById(R.id.button_start_sequence);
         startButton.setOnClickListener(this);
+        Button showTarget = (Button) rootView.findViewById(R.id.button_show_target);
+        showTarget.setOnClickListener(this);
 
-        return view;
+        return rootView;
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.button_start_sequence) {
+            // hide show button
+            sequenceStarted = true;
+            rootView.findViewById(R.id.button_show_target).setVisibility(View.INVISIBLE);
+
             ServoManager.getInstance().hideTarget();
 
             ServoManager.getPrepareTimer().start(prepare);
             view.setVisibility(View.GONE);
+        }
+        if (view.getId() == R.id.button_show_target) {
+            if (!sequenceStarted) {
+                ServoManager.getInstance().showTarget();
+            }
         }
     }
 
@@ -129,6 +142,9 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
             if (getActivity() != null) {
                 ((ShootingActivity) getActivity()).next();
             }
+
+            sequenceStarted = true;
+            rootView.findViewById(R.id.button_show_target).setVisibility(View.VISIBLE);
         }
     }
 

@@ -14,6 +14,7 @@
     <string name="button_disconnect">Katkaise yhteys</string>
     <string name="button_start_shooting">Aloita ammunta</string>
     <string name="button_start_sequence">Aloita</string>
+    <string name="button_show_target">Näytä taulu</string>
 
     <string name="tick">&gt;</string>
     <string name="open_bluetooth_error">Bluetooth pitää olla päällä. Käynnistä sovellus uudelleen.</string>
