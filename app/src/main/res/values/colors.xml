@@ -6,6 +6,8 @@
     <color name="accent_material_dark" tools:override="true">#ff5a595b</color>
     <color name="white">#fff</color>
 
+    <color name="progress_load_start">#00FF00</color>
+    <color name="progress_load_end">#00D000</color>
     <color name="progress_wait_start">#0080FF</color>
     <color name="progress_wait_end">#0040FF</color>
     <color name="progress_shoot_start">#FF4000</color>

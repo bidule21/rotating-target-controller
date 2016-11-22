@@ -7,6 +7,7 @@ import org.db0.targetcontroller.model.FiringSequenceItem;
 import org.db0.targetcontroller.util.ServoManager;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * @author Timo/QVIK
@@ -19,6 +20,11 @@ public class TargetControllerApplication extends Application {
         super.onCreate();
 
         Realm.init(getApplicationContext());
+        RealmConfiguration realmConfiguration = new RealmConfiguration
+                .Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(realmConfiguration);
 
         initrealm();
 
@@ -34,29 +40,29 @@ public class TargetControllerApplication extends Application {
         if (firingSequence == null) {
             realm.beginTransaction();
             FiringSequence sequence = realm.createObject(FiringSequence.class);
-            sequence.setName("2 x 10s, 2 x 8s, 2 x 6s");
+            sequence.setName("Ilmaolympiapistooli 2 x 10s, 2 x 8s, 2 x 6s");
 
-            FiringSequenceItem sequenceItem = new FiringSequenceItem(10, 10, true);
+            FiringSequenceItem sequenceItem = new FiringSequenceItem(30, 7, 10, true);
             realm.copyToRealm(sequenceItem);
             sequence.addSequenceItem(sequenceItem);
 
-            sequenceItem = new FiringSequenceItem(10, 10, true);
+            sequenceItem = new FiringSequenceItem(30, 7, 10, true);
             realm.copyToRealm(sequenceItem);
             sequence.addSequenceItem(sequenceItem);
 
-            sequenceItem = new FiringSequenceItem(8, 8, true);
+            sequenceItem = new FiringSequenceItem(30, 7, 8, true);
             realm.copyToRealm(sequenceItem);
             sequence.addSequenceItem(sequenceItem);
 
-            sequenceItem = new FiringSequenceItem(8, 8, true);
+            sequenceItem = new FiringSequenceItem(30, 7, 8, true);
             realm.copyToRealm(sequenceItem);
             sequence.addSequenceItem(sequenceItem);
 
-            sequenceItem = new FiringSequenceItem(6, 6, true);
+            sequenceItem = new FiringSequenceItem(30, 7, 6, true);
             realm.copyToRealm(sequenceItem);
             sequence.addSequenceItem(sequenceItem);
 
-            sequenceItem = new FiringSequenceItem(6, 6, true);
+            sequenceItem = new FiringSequenceItem(30, 7, 6, true);
             realm.copyToRealm(sequenceItem);
             sequence.addSequenceItem(sequenceItem);
 

@@ -13,6 +13,8 @@ import com.squareup.otto.Subscribe;
 
 import org.db0.targetcontroller.model.FiringTimerAdvancedMessage;
 import org.db0.targetcontroller.model.FiringTimerFinishedMessage;
+import org.db0.targetcontroller.model.LoadTimerAdvancedMessage;
+import org.db0.targetcontroller.model.LoadTimerFinishedMessage;
 import org.db0.targetcontroller.model.PrepareTimerAdvancedMessage;
 import org.db0.targetcontroller.model.PrepareTimerFinishedMessage;
 import org.db0.targetcontroller.util.ServoManager;
@@ -21,27 +23,36 @@ import java.util.Locale;
 
 
 public class ShootingFragment extends Fragment implements View.OnClickListener {
+    private static final String ARG_LOAD = "load";
     private static final String ARG_PREPARE = "prepare";
     private static final String ARG_FIRE = "fire";
     private static final String ARG_PAUSEAFTER = "pauseafter";
 
+    private int load;
     private int prepare;
     private int fire;
     private boolean pauseAfter;
 
     private View rootView;
+    private ProgressBar loadProgress;
+    private TextView loadTime;
     private ProgressBar prepareProgress;
     private TextView prepareTime;
     private ProgressBar firingProgress;
     private TextView firingTime;
+
     private boolean sequenceStarted = false;
+    private boolean loaded = false;
+
+    private Button startButton;
 
     public ShootingFragment() {
     }
 
-    public static ShootingFragment newInstance(int prepare, int fire, boolean pauseAfter) {
+    public static ShootingFragment newInstance(int load, int prepare, int fire, boolean pauseAfter) {
         ShootingFragment fragment = new ShootingFragment();
         Bundle args = new Bundle();
+        args.putInt(ARG_LOAD, load);
         args.putInt(ARG_PREPARE, prepare);
         args.putInt(ARG_FIRE, fire);
         args.putBoolean(ARG_PAUSEAFTER, pauseAfter);
@@ -53,6 +64,7 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            load = getArguments().getInt(ARG_LOAD);
             prepare = getArguments().getInt(ARG_PREPARE);
             fire = getArguments().getInt(ARG_FIRE);
             pauseAfter = getArguments().getBoolean(ARG_PAUSEAFTER);
@@ -64,6 +76,12 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_shooting, container, false);
 
+        loadTime = (TextView) rootView.findViewById(R.id.load_time);
+        loadTime.setText(String.format(Locale.getDefault(), "%d", load));
+        loadProgress = (ProgressBar) rootView.findViewById(R.id.progress_load);
+        loadProgress.setMax(load);
+        loadProgress.setProgress(load);
+
         prepareTime = (TextView) rootView.findViewById(R.id.prepare_time);
         prepareTime.setText(String.format(Locale.getDefault(), "%d", prepare));
         prepareProgress = (ProgressBar) rootView.findViewById(R.id.progress_wait);
@@ -74,10 +92,10 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
         firingTime = (TextView) rootView.findViewById(R.id.firing_time);
         firingTime.setText(String.format(Locale.getDefault(), "%d", fire));
         firingProgress = (ProgressBar) rootView.findViewById(R.id.progress_shoot);
-        firingProgress.setMax(prepare);
-        firingProgress.setProgress(prepare);
+        firingProgress.setMax(fire);
+        firingProgress.setProgress(fire);
 
-        Button startButton = (Button) rootView.findViewById(R.id.button_start_sequence);
+        startButton = (Button) rootView.findViewById(R.id.button_start_sequence);
         startButton.setOnClickListener(this);
         Button showTarget = (Button) rootView.findViewById(R.id.button_show_target);
         showTarget.setOnClickListener(this);
@@ -89,13 +107,20 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if (view.getId() == R.id.button_start_sequence) {
             // hide show button
-            sequenceStarted = true;
-            rootView.findViewById(R.id.button_show_target).setVisibility(View.INVISIBLE);
+            if (loaded) {
+                sequenceStarted = true;
+                rootView.findViewById(R.id.button_show_target).setVisibility(View.INVISIBLE);
 
-            ServoManager.getInstance().hideTarget();
+                ServoManager.getInstance().hideTarget();
 
-            ServoManager.getPrepareTimer().start(prepare);
-            view.setVisibility(View.GONE);
+                ServoManager.getPrepareTimer().start(prepare);
+                view.setVisibility(View.GONE);
+            } else {
+                ServoManager.getLoadTimer().start(load);
+
+                loaded = true;
+                startButton.setText(R.string.button_start_sequence);
+            }
         }
         if (view.getId() == R.id.button_show_target) {
             if (!sequenceStarted) {
@@ -104,6 +129,21 @@ public class ShootingFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Subscribe
+    public void loadTimeAdvanced(LoadTimerAdvancedMessage message) {
+        if (getUserVisibleHint()) {
+            loadProgress.setProgress(message.getProgress());
+            loadTime.setText(String.format(Locale.getDefault(), "%d", message.getProgress()));
+        }
+    }
+
+    @Subscribe
+    public void loadTimeFinished(LoadTimerFinishedMessage message) {
+        if (getUserVisibleHint()) {
+            loadProgress.setProgress(0);
+            loadTime.setText("0");
+        }
+    }
     @Subscribe
     public void prepareTimeAdvanced(PrepareTimerAdvancedMessage message) {
         if (getUserVisibleHint()) {

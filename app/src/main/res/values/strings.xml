@@ -13,8 +13,9 @@
     <string name="button_connect">Yhdistä tauluun</string>
     <string name="button_disconnect">Katkaise yhteys</string>
     <string name="button_start_shooting">Aloita ammunta</string>
+    <string name="button_start_load">Aloita lataaminen</string>
     <string name="button_start_sequence">Aloita</string>
-    <string name="button_show_target">Näytä taulu</string>
+    <string name="button_show_target">Näytä taulut</string>
 
     <string name="tick">&gt;</string>
     <string name="open_bluetooth_error">Bluetooth pitää olla päällä. Käynnistä sovellus uudelleen.</string>
@@ -23,8 +24,10 @@
     <string name="bluetooth_no_device">Taulua ei löytynyt. Parita laite taulun HC-06 kanssa uudelleen.</string>
 
     <string name="title_activity_shooting">ShootingActivity</string>
-    <string name="shooting_prepare">Valmistautuminen</string>
+    <string name="shooting_load">Lataa</string>
+    <string name="shooting_prepare">Huomio</string>
     <string name="shooting_firing">Ammunta</string>
+
     <string name="message_doubleclick_to_exit">Paina takaisin-nappia uudelleen poistuaksesi ammunnasta</string>
 
 </resources>

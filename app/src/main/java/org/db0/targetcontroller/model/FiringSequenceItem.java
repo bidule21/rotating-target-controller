@@ -8,6 +8,7 @@ import io.realm.RealmObject;
  */
 
 public class FiringSequenceItem extends RealmObject {
+    private int load;
     private int prepare;
     private int fire;
     private boolean pauseAfter;
@@ -15,10 +16,19 @@ public class FiringSequenceItem extends RealmObject {
     public FiringSequenceItem() {
     }
 
-    public FiringSequenceItem(int prepare, int fire, boolean pauseAfter) {
+    public FiringSequenceItem(int load, int prepare, int fire, boolean pauseAfter) {
+        this.load = load;
         this.prepare = prepare;
         this.fire = fire;
         this.pauseAfter = pauseAfter;
+    }
+
+    public int getLoad() {
+        return load;
+    }
+
+    public void setLoad(int load) {
+        this.load = load;
     }
 
     public int getPrepare() {

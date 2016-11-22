@@ -88,7 +88,7 @@ public class ShootingActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             FiringSequenceItem item = items.get(position);
-            return ShootingFragment.newInstance(item.getPrepare(), item.getFire(), item.isPauseAfter());
+            return ShootingFragment.newInstance(item.getLoad(), item.getPrepare(), item.getFire(), item.isPauseAfter());
         }
 
         @Override
@@ -109,6 +109,7 @@ public class ShootingActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             finish();
+            ServoManager.getLoadTimer().cancel();
             ServoManager.getPrepareTimer().cancel();
             ServoManager.getFiringTimer().cancel();
 

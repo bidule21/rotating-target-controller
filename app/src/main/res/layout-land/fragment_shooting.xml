@@ -20,15 +20,53 @@
                 android:layout_height="wrap_content">
 
                 <ProgressBar
+                    android:id="@+id/progress_load"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:background="@drawable/circular_progress_background"
+                    android:indeterminate="false"
+                    android:max="60"
+                    android:progressDrawable="@drawable/circular_progress_load"
+                    tools:progress="49" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/load_time"
+                        style="@style/FiringTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        tools:text="49" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/shooting_load" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
                     android:id="@+id/progress_wait"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     android:background="@drawable/circular_progress_background"
                     android:indeterminate="false"
-                    android:max="10"
+                    android:max="7"
                     android:progressDrawable="@drawable/circular_progress_wait"
-                    tools:progress="4" />
+                    tools:progress="7" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -42,7 +80,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        tools:text="4" />
+                        tools:text="7" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -98,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/button_start_sequence" />
+            android:text="@string/button_start_load" />
 
         <Button
             android:id="@+id/button_show_target"

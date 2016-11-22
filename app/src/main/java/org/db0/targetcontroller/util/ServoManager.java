@@ -13,6 +13,8 @@ import org.db0.targetcontroller.R;
 import org.db0.targetcontroller.ShootingActivity;
 import org.db0.targetcontroller.model.FiringTimerAdvancedMessage;
 import org.db0.targetcontroller.model.FiringTimerFinishedMessage;
+import org.db0.targetcontroller.model.LoadTimerAdvancedMessage;
+import org.db0.targetcontroller.model.LoadTimerFinishedMessage;
 import org.db0.targetcontroller.model.PrepareTimerAdvancedMessage;
 import org.db0.targetcontroller.model.PrepareTimerFinishedMessage;
 import org.db0.targetcontroller.model.Servo;
@@ -37,6 +39,7 @@ public class ServoManager {
 
     private static ServoManager instance;
 
+    private static SecondCountDownTimer loadTimer;
     private static SecondCountDownTimer prepareTimer;
     private static SecondCountDownTimer firingTimer;
 
@@ -63,6 +66,18 @@ public class ServoManager {
 
     public static void init() {
         instance = new ServoManager();
+
+        loadTimer = new SecondCountDownTimer() {
+            @Override
+            public void onTick(int progress) {
+                bus.post(new LoadTimerAdvancedMessage(progress));
+            }
+
+            @Override
+            public void onFinish() {
+                bus.post(new LoadTimerFinishedMessage());
+            }
+        };
 
         prepareTimer = new SecondCountDownTimer() {
             @Override
@@ -191,6 +206,10 @@ public class ServoManager {
 
     public Bus getBus() {
         return bus;
+    }
+
+    public static SecondCountDownTimer getLoadTimer() {
+        return loadTimer;
     }
 
     public static SecondCountDownTimer getPrepareTimer() {
